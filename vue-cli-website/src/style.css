@@ -10,11 +10,13 @@ html, body {
   overflow-y: auto; /* 允许垂直滚动 */
 }
 
-/* 确保所有内容宽度一致 */
+/* 确保所有内容宽度响应式 */
 #app {
-  width: 2160px;
+  width: 100%;
+  max-width: 2160px;
   margin: 0 auto;
   position: relative;
+  padding: 0;
 }
 
 /* 平滑过渡 */
