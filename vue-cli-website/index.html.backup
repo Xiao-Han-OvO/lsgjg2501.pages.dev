@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/vite.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G2501 - 成员列表</title>
+  
+  <!-- 引入字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- 立即设置主题，防止闪烁 -->
+  <script>
+    (function() {
+      try {
+        const storedTheme = localStorage.getItem('theme')
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        
+        if (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+      } catch (e) {
+        console.log('主题初始化失败:', e)
+      }
+    })()
+  </script>
+</head>
+<body class="antialiased overflow-x-auto">
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
