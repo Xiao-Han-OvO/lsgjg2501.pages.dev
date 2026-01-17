@@ -29,11 +29,18 @@
     
     <!-- 照片 -->
     <div class="absolute left-[18px] top-[18px] bottom-[18px] w-[84px] rounded-2xl overflow-hidden border-2 border-white dark:border-gray-800 z-10">
-      <img 
+      <!-- <img 
         :src="member.avatar" 
         :alt="member.name"
         class="w-full h-full object-cover"
-      />
+      /> -->
+      <div class="w-full h-full object-cover">
+        <svg style="color:#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc. --><path d="M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"/></svg>
+        <!-- <img 
+          :src="../assets/{{ member.id }}.svg"
+          class="w-full h-full object-cover"
+          /> -->
+      </div>
     </div>
     
     <!-- 姓名 -->

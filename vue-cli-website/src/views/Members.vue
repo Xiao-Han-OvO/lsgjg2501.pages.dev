@@ -105,12 +105,19 @@ const viewMode = ref<'list' | 'grid'>('grid')
 
 // 模拟数据
 const members = ref([
-  { id: 1, name: '张三', description: '前端开发工程师 | Vue专家', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=张三' },
-  { id: 2, name: '李四', description: '后端开发工程师 | Node.js', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=李四' },
-  { id: 3, name: '王五', description: 'UI/UX设计师 | Figma大师', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=王五' },
-  { id: 4, name: '赵六', description: '全栈开发工程师 | 架构师', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=赵六' },
-  { id: 5, name: '钱七', description: '产品经理 | 需求分析师', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=钱七' },
-  { id: 6, name: '孙八', description: '测试工程师 | 质量保障', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=孙八' },
+  { id: 1, name: '艾可为', description: '物理竞赛组', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=张三' },
+  { id: 2, name: '曾浚源', description: '数学竞赛组', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=李四' },
+  { id: 3, name: '', description: '', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=王五' },
+  { id: 4, name: '陈彰沛', description: '', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=赵六' },
+  { id: 5, name: '邓一滔', description: '数学竞赛组', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=钱七' },
+  { id: 6, name: '邓子轩', description: '数学竞赛组', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=孙八' },
+  { id: 7, name: '董晋玮', description: '物理竞赛组', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=孙八' },
+  { id: 8, name: '杜玘岳', description: '', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=孙八' },
+  { id: 9, name: '范文熙', description: '物理竞赛组', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=孙八' },
+  { id: 10, name: '范亦宸', description: '数学竞赛组', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=孙八' },
+  { id: 11, name: '高铭森', description: '物理竞赛组', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=孙八' },
+  
+  
 ])
 
 // 将成员按3个一组分组
