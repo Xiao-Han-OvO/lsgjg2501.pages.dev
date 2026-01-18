@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen w-full mx-auto relative">
+  <div class="min-h-screen w-full mx-auto relative flex flex-col">
     <!-- 背景层 -->
     <BackgroundLayer />
     
@@ -7,7 +7,7 @@
     <Navbar />
     
     <!-- 页面内容区域 -->
-    <div class="relative">
+    <div class="relative flex-1">
       <!-- 页面标题区域 -->
       <div class="absolute left-[1rem] sm:left-[1.5rem] md:left-[2rem] lg:left-[130px] top-[80px] sm:top-[120px] md:top-[150px] lg:top-[160px] w-full px-[1rem] sm:px-[1.5rem] md:px-[2rem] lg:px-0">
         <!-- 标题和切换按键 -->
@@ -82,6 +82,9 @@
             <MemberCard :member="m" mode="list" />
           </div>
         </div>
+
+        <!-- 页脚 -->
+        <Footer />
       </div>
     </div>
   </div>
@@ -92,6 +95,7 @@ import { ref, computed } from 'vue'
 import Navbar from '../components/Navbar.vue'
 import MemberCard from '../components/MemberCard.vue'
 import BackgroundLayer from '../components/BackgroundLayer.vue'
+import Footer from '../components/Footer.vue'
 
 const viewMode = ref<'list' | 'grid'>('grid')
 
