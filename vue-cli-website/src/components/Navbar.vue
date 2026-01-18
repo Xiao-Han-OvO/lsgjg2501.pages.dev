@@ -1,6 +1,6 @@
 <template>
   <!-- 导航栏容器，宽度100%，固定定位 -->
-  <div class="fixed top-0 left-0 right-0 h-[80px] sm:h-[100px] lg:h-[120px] z-50">
+  <div class="fixed top-0 left-0 right-0 h-[50px] sm:h-[65px] lg:h-[80px] z-50">
     <!-- 导航栏背景层 -->
     <div class="absolute inset-0 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800"></div>
     
@@ -10,12 +10,12 @@
         <!-- 左侧G2501和导航项 -->
         <div class="flex items-center h-full gap-[10px] sm:gap-[20px] lg:gap-[45px]">
           <!-- G2501圆角矩形 - 边框渐变 -->
-          <RouterLink to="/" class="w-[100px] sm:w-[120px] lg:w-[160px] h-[40px] sm:h-[50px] lg:h-[70px] block flex-shrink-0">
+          <RouterLink to="/" class="w-[75px] sm:w-[90px] lg:w-[100px] h-[30px] sm:h-[40px] lg:h-[50px] block flex-shrink-0">
             <!-- 边框渐变层 -->
             <div class="w-full h-full rounded-lg sm:rounded-xl lg:rounded-2xl p-[2px] bg-gradient-to-r from-[#00cd95] to-[#438bf1] hover:opacity-80 transition-opacity cursor-pointer">
               <!-- 内部背景 -->
               <div class="w-full h-full rounded-lg sm:rounded-xl lg:rounded-2xl bg-white dark:bg-gray-950 flex items-center justify-center">
-                <span class="font-bold text-sm sm:text-lg lg:text-3xl leading-none bg-gradient-to-r from-[#00cd95] to-[#438bf1] bg-clip-text text-transparent">
+                <span class="font-bold text-sm sm:text-lg lg:text-2xl leading-none bg-gradient-to-r from-[#00cd95] to-[#438bf1] bg-clip-text text-transparent">
                   G2501
                 </span>
               </div>
@@ -35,7 +35,7 @@
         </div>
 
         <!-- 右侧留空，保持对称 -->
-        <div class="w-[40px] sm:w-[50px] lg:w-[60px] flex-shrink-0"></div>
+        <div class="w-[30px] sm:w-[40px] lg:w-[40px] flex-shrink-0"></div>
       </div>
     </div>
   </div>

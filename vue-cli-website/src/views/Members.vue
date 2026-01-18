@@ -9,11 +9,11 @@
     <!-- 页面内容区域 -->
     <div class="relative">
       <!-- 页面标题区域 -->
-      <div class="absolute left-[1rem] sm:left-[1.5rem] md:left-[2rem] lg:left-[180px] top-[80px] sm:top-[120px] md:top-[150px] lg:top-[210px] w-full px-[1rem] sm:px-[1.5rem] md:px-[2rem] lg:px-0">
+      <div class="absolute left-[1rem] sm:left-[1.5rem] md:left-[2rem] lg:left-[130px] top-[80px] sm:top-[120px] md:top-[150px] lg:top-[160px] w-full px-[1rem] sm:px-[1.5rem] md:px-[2rem] lg:px-0">
         <!-- 标题和切换按键 -->
         <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-[15px] sm:gap-[20px]">
           <!-- 页面标题 -->
-          <h1 class="text-[1.8rem] sm:text-[3rem] md:text-[5rem] lg:text-[150px] font-bold bg-gradient-to-r from-[#00cd95] to-[#438bf1] bg-clip-text text-transparent leading-tight lg:leading-none h-auto lg:h-[150px] flex items-end flex-shrink-0 break-words">
+          <h1 class="text-[1.8rem] sm:text-[3rem] md:text-[5rem] lg:text-[70px] font-bold bg-gradient-to-r from-[#00cd95] to-[#438bf1] bg-clip-text text-transparent leading-tight lg:leading-none h-auto lg:h-[70px] flex items-end flex-shrink-0 break-words">
             成员列表
           </h1>
           
@@ -21,33 +21,33 @@
           <div class="flex items-center gap-[8px] sm:gap-[12px] md:gap-[15px] lg:gap-[20px] flex-shrink-0">
             <button 
               @click="viewMode = 'list'"
-              class="w-[40px] h-[40px] sm:w-[55px] sm:h-[55px] md:w-[75px] md:h-[75px] lg:w-[90px] lg:h-[90px] rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center transition-all duration-300"
+              class="w-[40px] h-[40px] sm:w-[55px] sm:h-[55px] md:w-[75px] md:h-[75px] lg:w-[63px] lg:h-[63px] rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center transition-all duration-300"
               :class="[
                 viewMode === 'list' 
                   ? 'bg-gradient-to-r from-[#00cd95] to-[#438bf1] text-white' 
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               ]"
             >
-              <font-awesome-icon icon="list" class="text-sm sm:text-lg md:text-2xl lg:text-3xl" />
+              <font-awesome-icon icon="list" class="text-sm sm:text-lg md:text-2xl lg:text-2xl" />
             </button>
             
             <button 
               @click="viewMode = 'grid'"
-              class="w-[40px] h-[40px] sm:w-[55px] sm:h-[55px] md:w-[75px] md:h-[75px] lg:w-[90px] lg:h-[90px] rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center transition-all duration-300"
+              class="w-[40px] h-[40px] sm:w-[55px] sm:h-[55px] md:w-[75px] md:h-[75px] lg:w-[63px] lg:h-[63px] rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center transition-all duration-300"
               :class="[
                 viewMode === 'grid' 
                   ? 'bg-gradient-to-r from-[#00cd95] to-[#438bf1] text-white' 
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               ]"
             >
-              <font-awesome-icon icon="table" class="text-sm sm:text-lg md:text-2xl lg:text-3xl" />
+              <font-awesome-icon icon="table" class="text-sm sm:text-lg md:text-2xl lg:text-2xl" />
             </button>
           </div>
         </div>
       </div>
       
       <!-- 主显示区域 -->
-      <div class="absolute top-[180px] sm:top-[260px] md:top-[350px] lg:top-[420px] left-[1rem] sm:left-[1.5rem] md:left-[2rem] lg:left-[120px] right-[1rem] sm:right-[1.5rem] md:right-[2rem] lg:right-[120px] pb-[20px] sm:pb-[40px] md:pb-[60px] lg:pb-[60px]">
+      <div class="absolute top-[180px] sm:top-[260px] md:top-[350px] lg:top-[330px] left-[1rem] sm:left-[1.5rem] md:left-[2rem] lg:left-[85px] right-[1rem] sm:right-[1.5rem] md:right-[2rem] lg:right-[85px] pb-[20px] sm:pb-[40px] md:pb-[60px] lg:pb-[42px]">
         <!-- 网格视图 -->
         <div v-if="viewMode === 'grid'">
           <!-- 响应式网格：1列(手机) -> 2列(平板) -> 3列(桌面) -->
