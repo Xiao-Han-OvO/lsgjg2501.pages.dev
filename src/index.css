@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  background-color: #fffbeb; /* amber-50 fallback for light mode */
+}
+html.dark {
+  background-color: #030712; /* gray-950 fallback for dark mode */
+}
