@@ -45,6 +45,26 @@ export function Members() {
     return [...others, ...specials];
   }, [sortedMembersByName]);
 
+  // Group by surname initial for "name" view
+  const groupedByInitial = useMemo(() => {
+    const groups: { letter: string; members: typeof sortedMembersByName }[] = [];
+    const map = new Map<string, typeof sortedMembersByName>();
+
+    for (const member of sortedMembersByName) {
+      const initial = pinyin(member.name.charAt(0), { pattern: 'first', toneType: 'none' }).charAt(0).toUpperCase();
+      if (!map.has(initial)) {
+        map.set(initial, []);
+      }
+      map.get(initial)!.push(member);
+    }
+
+    for (const [letter, members] of map) {
+      groups.push({ letter, members });
+    }
+
+    return groups;
+  }, [sortedMembersByName]);
+
   const flatListToRender = viewMode === "id" ? sortedMembersById : sortedMembersByName;
 
   const handleMemberClick = (name: string) => {
@@ -124,6 +144,37 @@ export function Members() {
               </div>
             ))}
           </div>
+        ) : viewMode === "name" ? (
+          <div className="space-y-12">
+            {groupedByInitial.map((group) => (
+              <div key={group.letter} className="flex flex-col gap-6">
+                <h3 className="text-2xl font-bold text-slate-800 dark:text-white pl-4 border-l-4 border-violet-500">
+                  {group.letter}
+                </h3>
+                <div className="flex flex-wrap gap-6">
+                  {group.members.map((member, i) => (
+                    <motion.div
+                      key={member.name}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: i * 0.05 }}
+                      onClick={() => handleMemberClick(member.name)}
+                      className="w-32 h-32 md:w-36 md:h-36 bg-white/40 dark:bg-white/5 backdrop-blur-lg rounded-2xl flex flex-col items-center justify-center border border-white/60 dark:border-white/10 hover:scale-105 hover:bg-white/60 dark:hover:bg-white/10 transition-all shadow-lg cursor-pointer group relative overflow-hidden"
+                    >
+                      <div className={`absolute top-0 right-0 px-2 py-1 rounded-bl-lg text-[10px] font-bold text-white bg-gradient-to-r ${member.color} opacity-0 group-hover:opacity-100 transition-opacity`}>
+                        {member.groupName.replace("竞赛组", "")}
+                      </div>
+                      <div className={`w-10 h-10 bg-gradient-to-br ${member.color} rounded-full mb-3 shadow-inner flex items-center justify-center text-white font-bold text-xs opacity-80 group-hover:opacity-100 transition-opacity`}>
+                        {group.letter}
+                      </div>
+                      <h4 className="text-lg font-semibold text-slate-800 dark:text-white/90">{member.name}</h4>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <div className="flex flex-wrap gap-6 justify-center md:justify-start">
             {flatListToRender.map((member, i) => (
@@ -141,9 +192,7 @@ export function Members() {
                 </div>
 
                 <div className={`w-10 h-10 bg-gradient-to-br ${member.color} rounded-full mb-3 shadow-inner flex items-center justify-center text-white font-bold text-xs opacity-80 group-hover:opacity-100 transition-opacity`}>
-                   {viewMode === "id" 
-                     ? i + 1 
-                     : pinyin(member.name, { pattern: 'first', toneType: 'none' }).charAt(0).toUpperCase()}
+                   {i + 1}
                 </div>
                 <h4 className="text-lg font-semibold text-slate-800 dark:text-white/90">{member.name}</h4>
               </motion.div>
