@@ -74,8 +74,15 @@ export function Members() {
 
   return (
     <div className="h-full w-full flex flex-col items-center p-8 overflow-y-auto relative">
+      {/* Decorative blobs */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-teal-400/20 dark:bg-teal-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/3 -right-24 w-80 h-80 bg-emerald-400/20 dark:bg-emerald-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute bottom-1/4 left-1/4 w-72 h-72 bg-cyan-300/20 dark:bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-500" />
+      </div>
+
       <div className="flex flex-col items-center mb-12 mt-8">
-        <h1 className="text-3xl md:text-5xl font-bold text-center text-slate-800 dark:text-white mb-6">成员列表</h1>
+        <h1 className="text-3xl md:text-5xl font-bold text-center text-teal-900 dark:text-white mb-6">成员列表</h1>
         
         {/* Toggle Switch */}
         <div className="flex flex-wrap justify-center items-center gap-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md p-1.5 rounded-full border border-white/20 shadow-sm">
@@ -83,7 +90,7 @@ export function Members() {
             onClick={() => setViewMode("group")}
             className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
               viewMode === "group" 
-                ? "bg-violet-600 text-white shadow-md" 
+                ? "bg-teal-600 text-white shadow-md" 
                 : "text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-700/40"
             }`}
           >
@@ -94,7 +101,7 @@ export function Members() {
             onClick={() => setViewMode("name")}
             className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
               viewMode === "name" 
-                ? "bg-violet-600 text-white shadow-md" 
+                ? "bg-teal-600 text-white shadow-md" 
                 : "text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-700/40"
             }`}
           >
@@ -105,7 +112,7 @@ export function Members() {
             onClick={() => setViewMode("id")}
             className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
               viewMode === "id" 
-                ? "bg-violet-600 text-white shadow-md" 
+                ? "bg-teal-600 text-white shadow-md" 
                 : "text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-700/40"
             }`}
           >
@@ -148,7 +155,7 @@ export function Members() {
           <div className="space-y-12">
             {groupedByInitial.map((group) => (
               <div key={group.letter} className="flex flex-col gap-6">
-                <h3 className="text-2xl font-bold text-slate-800 dark:text-white pl-4 border-l-4 border-violet-500">
+                <h3 className="text-2xl font-bold text-slate-800 dark:text-white pl-4 border-l-4 border-teal-500">
                   {group.letter}
                 </h3>
                 <div className="flex flex-wrap gap-6">

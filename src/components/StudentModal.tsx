@@ -64,7 +64,7 @@ export function StudentModal({ isOpen, onClose, profile }: StudentModalProps) {
                  
                  <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 mt-2 bg-white/60 dark:bg-slate-700/60 px-4 py-1.5 rounded-full backdrop-blur-sm">
                    <Hash size={18} />
-                   <span className="font-mono text-lg font-bold">#{id.toString().padStart(2, '0')}</span>
+                   <span className="font-mono text-lg font-bold">{id.toString().padStart(2, '0')}</span>
                  </div>
               </div>
 
