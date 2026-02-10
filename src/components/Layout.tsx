@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useRef, useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { motion } from "framer-motion";
 import { useLocation, Link } from "react-router-dom";
@@ -22,6 +22,13 @@ export function Layout({ children }: { children: ReactNode }) {
   const currentBg = backgrounds[location.pathname] || backgrounds["/"];
   const accentGradient = accentGradients[location.pathname] || accentGradients["/"];
   const [baseBg, setBaseBg] = useState(currentBg);
+  const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
 
   return (
     <div className="flex h-screen w-full overflow-hidden flex-row md:flex-col font-sans relative">
@@ -47,7 +54,7 @@ export function Layout({ children }: { children: ReactNode }) {
       </header>
 
       {/* Main Content with Left Margin for Mobile Sidebar */}
-      <main className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden ml-16 md:ml-0">
+      <main ref={mainRef} className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden ml-16 md:ml-0">
         <motion.div
           key={location.pathname}
           className="w-full"
@@ -65,7 +72,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 {/* Left: Copyright */}
                 <div className="text-center sm:text-left">
                   <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400">
-                    Beta Build v1.0.0
+                    Stable Build v1.0.1
                   </p>
                   <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400">
                     © 2025-2026{" "}
