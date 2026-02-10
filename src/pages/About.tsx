@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { 
   Users, Activity, FileText, Flag, BookOpen, ShieldCheck, 
   Dumbbell, Heart, Sparkles, Zap, Music, FlaskConical, Dna, UserCheck,
-  GraduationCap, Award, Lightbulb
+  GraduationCap, Award, Lightbulb, Trophy, Medal
 } from "lucide-react";
 import { StudentModal } from "@/components/StudentModal";
 import { getStudentProfile, StudentProfile } from "@/data/classInfo";
@@ -295,6 +295,95 @@ export function About() {
               这里有深入探讨的晚自习，有相互讲题的课间十分钟，也有赛场外的欢声笑语。我们尊重每一份专注，也珍惜每一次合作；既有个体钻研的寂静时刻，也有团队备战的炽热场景。在这里，理性与热情并存，独立与协作共生。
             </p>
           </div>
+        </section>
+
+        {/* Honor Wall */}
+        <section>
+          <h2 className="text-3xl font-bold text-center text-slate-800 dark:text-white mb-4">
+            <span className="flex items-center justify-center gap-3">
+              <Trophy className="text-amber-500" /> 班级荣誉墙
+            </span>
+          </h2>
+          <p className="text-center text-slate-500 dark:text-slate-400 mb-12 max-w-2xl mx-auto">
+            我们不仅在知识的疆场中竞逐，也在集体的舞台上发光。每一份荣誉，都是我们携手共进的证明。
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            {[
+              {
+                title: "校军训歌咏比赛特等奖",
+                desc: "当嘹亮的歌声穿透迷彩的盛夏，我们以最整齐的和声，唱出了青春的第一份凝聚力。",
+                icon: Music,
+                gradient: "from-amber-400 to-yellow-500",
+                bg: "from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30",
+                border: "border-amber-200 dark:border-amber-800/30",
+              },
+              {
+                title: "校军训拔河比赛特等奖",
+                desc: "一根绳，一条心。倾尽全力的呐喊与汗水，诠释了何为\u201c力出一孔\u201d的团队信念。",
+                icon: Dumbbell,
+                gradient: "from-orange-400 to-red-500",
+                bg: "from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30",
+                border: "border-orange-200 dark:border-orange-800/30",
+              },
+              {
+                title: "年级篮球赛第一名",
+                desc: "奔跑、传球、跃起。赛场上的每一次配合，都是智慧与热血的双重奏，我们为共同的目标而战。",
+                icon: Award,
+                gradient: "from-blue-400 to-indigo-500",
+                bg: "from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30",
+                border: "border-blue-200 dark:border-blue-800/30",
+              },
+              {
+                title: "校课本剧表演一等奖",
+                desc: "从文字到舞台，我们赋予经典以青春的灵魂。台前的演绎与幕后的协作，展现了我们理性思维之外的创意与才情。",
+                icon: Sparkles,
+                gradient: "from-purple-400 to-fuchsia-500",
+                bg: "from-purple-50 to-fuchsia-50 dark:from-purple-950/30 dark:to-fuchsia-950/30",
+                border: "border-purple-200 dark:border-purple-800/30",
+              },
+            ].map((honor, index) => (
+              <motion.div
+                key={honor.title}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -120 : 120 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
+                className={`bg-gradient-to-br ${honor.bg} p-8 rounded-2xl border ${honor.border} hover:shadow-lg transition-shadow relative overflow-hidden group`}
+              >
+                {/* Decorative medal icon in background */}
+                <Medal className="absolute -bottom-4 -right-4 w-24 h-24 text-slate-200/20 dark:text-white/5 group-hover:text-slate-200/40 dark:group-hover:text-white/10 transition-colors" />
+                
+                <div className="relative z-10">
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${honor.gradient} flex items-center justify-center text-white mb-4 shadow-md`}>
+                    <honor.icon size={24} />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-3">{honor.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{honor.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Honor Closing */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-8 text-center text-white shadow-xl relative overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full blur-3xl -ml-12 -mt-12" />
+            <div className="relative z-10">
+              <Trophy className="w-8 h-8 mx-auto mb-4 opacity-90" />
+              <p className="text-lg font-bold mb-1">
+                荣誉，是过去的勋章，更是未来的起点。
+              </p>
+              <p className="opacity-90">
+                G2501班的故事，由拼搏与热爱共同写就。
+              </p>
+            </div>
+          </motion.div>
         </section>
 
       </div>
