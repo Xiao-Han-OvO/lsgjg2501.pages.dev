@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Sparkles, TrainFront, GraduationCap, Home, Flame, Users, Quote, HelpCircle } from "lucide-react";
+import { Sparkles, TrainFront, GraduationCap, Home, Flame, Users, Quote, HelpCircle, Building2, Trophy, Star } from "lucide-react";
 
 export function Throwback() {
   const events = [
@@ -8,6 +8,12 @@ export function Throwback() {
       title: "初见",
       icon: <Sparkles className="w-6 h-6 text-yellow-500" />,
       content: "三月的傍晚，微风轻拂。一群怀揣竞赛梦想的少年，第一次以\u201CG2501\u201D之名相聚。从那一刻起，我们不再只是信息、物理、数学、化学、生物的单科行者，而成了一个共同体的星辰。"
+    },
+    {
+      date: "2025.4.24",
+      title: "探访",
+      icon: <Building2 className="w-6 h-6 text-cyan-500" />,
+      content: "走进华自科技，亲眼见证智能控制技术如何驱动水力发电、管理能源。算法与原理，在真实工程中找到回响。这是一次从理论到实践的\u201C锚定\u201D，让我们明晰了所学知识的重量与方向。"
     },
     {
       date: "2025.6.27 \u2014 7.2",
@@ -38,6 +44,18 @@ export function Throwback() {
       title: "同学加入",
       icon: <Users className="w-6 h-6 text-purple-500" />,
       content: "金秋伊始，班集体迎来了26张新面孔。新鲜的笑容注入，故事有了新的篇章。从\u201C我\u201D到\u201C我们\u201D，队伍更加完整，征程也更加辽阔。"
+    },
+    {
+      date: "2025.9.28-29",
+      title: "奔跑",
+      icon: <Trophy className="w-6 h-6 text-amber-500" />,
+      content: "操场成为新的赛场。从短跑的爆发到长跑的坚持，从田赛的跃起到接力的默契\u2014\u2014我们不仅以笔为剑，亦能以汗水为歌。看台上的呐喊，跑道上的身影，共同拼成属于G2501的秋日群像。名次之外，我们收获了另一种全力以赴的酣畅。"
+    },
+    {
+      date: "2025.12.25",
+      title: "绽放",
+      icon: <Star className="w-6 h-6 text-pink-500" />,
+      content: "平安夜的舞台，属于我们的课本剧。纵最终排名第九，但那份全心投入的酣畅、观众席真诚的笑声与掌声，早已超越名次。我们自信、尽兴、闪耀\u2014\u2014过程比结果，更值得珍藏。这晚，我们不仅是竞赛生，更是生活的创作者。"
     }
   ];
 
