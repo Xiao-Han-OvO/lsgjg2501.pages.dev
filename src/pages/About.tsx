@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { 
-  Users, Activity, FileText, Flag, BookOpen, ShieldCheck, 
-  Dumbbell, Heart, Sparkles, Zap, Music, FlaskConical, Dna, UserCheck,
-  GraduationCap, Award, Lightbulb, Trophy, Medal
+  Users, Activity, BookOpen, 
+  Sparkles, Zap, FlaskConical, Dna, UserCheck,
+  GraduationCap, Award, Lightbulb,
+  Trophy, Music, Dumbbell, Medal
 } from "lucide-react";
 import { StudentModal } from "@/components/StudentModal";
-import { getStudentProfile, StudentProfile } from "@/data/classInfo";
+import { getTermData, getStudentProfile, StudentProfile } from "@/data/classInfo";
+import { useTime } from "@/context/TimeContext";
 
 const academicCards = [
   {
@@ -66,43 +68,19 @@ const academicCards = [
   },
 ];
 
-const committeeData = [
-  { role: "学习班长", name: "杨可为", icon: UserCheck, color: "text-blue-500", bg: "bg-blue-100 dark:bg-blue-950/60", desc: "引领学风，统筹学术" },
-  { role: "活动班长", name: "陈彰沛", icon: Activity, color: "text-orange-500", bg: "bg-orange-100 dark:bg-orange-950/60", desc: "凝聚集体，策划精彩" },
-  { role: "班主任助理", name: "杜玘岳", icon: FileText, color: "text-slate-500", bg: "bg-slate-100 dark:bg-slate-900/60", desc: "承上启下，衔接内外" },
-  { role: "团支部书记", name: "游宇哲", icon: Flag, color: "text-red-500", bg: "bg-red-100 dark:bg-red-950/60", desc: "思想引领，组织建设" },
-  { role: "学习委员", name: "胡清清", icon: BookOpen, color: "text-cyan-500", bg: "bg-cyan-100 dark:bg-cyan-950/60", desc: "细致落实，助力日常" },
-  { role: "纪律委员", name: "黄季熙", icon: ShieldCheck, color: "text-indigo-500", bg: "bg-indigo-100 dark:bg-indigo-950/60", desc: "维护秩序，营造静心" },
-  { role: "体育委员", name: "艾可为", icon: Dumbbell, color: "text-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-950/60", desc: "强健体魄，凝聚活力" },
-  { role: "心理委员", name: "董晋玮、胡清清", icon: Heart, color: "text-pink-500", bg: "bg-pink-100 dark:bg-pink-950/60", desc: "聆听陪伴，守护心灵" },
-  { role: "卫生委员", name: "康子超、黎劢", icon: Sparkles, color: "text-teal-500", bg: "bg-teal-100 dark:bg-teal-950/60", desc: "守护环境，共建舒心" },
-  { role: "生活委员", name: "高铭森", icon: Zap, color: "text-yellow-500", bg: "bg-yellow-100 dark:bg-yellow-950/60", desc: "关照日常，细致入微" },
-  { role: "文娱委员", name: "周浩然", icon: Music, color: "text-purple-500", bg: "bg-purple-100 dark:bg-purple-950/60", desc: "点燃才情，丰富时光" },
-];
-
-const subjectTeachers = [
-  { name: "徐丹", subject: "语文", desc: "以文字为舟，以思想为帆。带我们穿越千年文脉，在语言的疆界里感受逻辑与美感的交融。她让看似\u201c遥远\u201d的人文之光，照亮竞赛生理性思考的深处。", color: "from-rose-400 to-pink-500" },
-  { name: "陈记铭", subject: "数学", desc: "公式在她笔下不止是符号，更是构建世界的骨架。她严谨的推理与清晰的演绎，为我们夯实思维的基石，让数学不仅是竞赛的武器，更成为理解万物秩序的眼睛。", color: "from-red-400 to-orange-500" },
-  { name: "任荟梓", subject: "英语", tag: "班主任", desc: "她是语言的传授者，更是成长的守护人。在课堂上，她带我们连接世界；在班级中，她以细致与智慧凝聚集体。亦师亦友，如涓涓细流，润泽着我们共同前行的每一天。", color: "from-amber-400 to-yellow-500" },
-  { name: "罗重学", subject: "物理", desc: "从牛顿到量子，他为我们拆解宇宙的运行法则。实验与理论在他手中交织，让抽象的物理概念落地生根。他是带领我们仰望星空，又脚踏实地的那位引路人。", color: "from-purple-400 to-indigo-500" },
-  { name: "杨英伟", subject: "化学", desc: "分子在他讲述中仿佛有了生命。他用反应诠释变化之美，用实验点燃探索之趣。课堂如同精密的化学反应，严谨而充满创造的惊喜。", color: "from-emerald-400 to-teal-500" },
-  { name: "彭小倩", subject: "生物", desc: "从细胞到生态系统，她为我们铺开生命的画卷。她讲述的不仅是知识，更是对生命奥秘的敬畏与好奇，让生物学成为连接微观与宏观的迷人学科。", color: "from-lime-400 to-green-500" },
-];
-
-const competitionCoaches = [
-  { name: "刘正", subject: "数学竞赛", desc: "他带领我们攀登纯思维的巅峰。在符号与证明的密林中，他为我们辟出路径，点燃灵感。不仅是技巧的传授，更是数学直觉与信念的培育者。", color: "from-red-400 to-pink-500" },
-  { name: "袁如意", subject: "物理竞赛", desc: "专注、深邃、举重若轻。他以清晰的物理图像和精妙的解题视角，将复杂的竞赛难题化为有序的思维训练。他是方向，也是后盾。", color: "from-purple-400 to-indigo-500" },
-  { name: "杨英伟", subject: "化学竞赛", desc: "从课堂到竞赛场，他带领我们深入化学的更深层。他搭建起从基础到高阶的桥梁，让热爱在挑战中淬炼成锋芒。", color: "from-emerald-400 to-teal-500" },
-  { name: "彭小倩", subject: "生物竞赛", desc: "她带领我们超越课本，直面生命科学的广阔前沿。在她的指导下，知识网络不断延展，对生命现象的理解也走向系统与深刻。", color: "from-lime-400 to-green-500" },
-  { name: "彭礼斯", subject: "信息竞赛", desc: "她是代码世界的架构师。从算法思维到实战调试，她陪伴我们在虚拟空间中构建逻辑的城堡，将创造力转化为解决实际问题的能力。", color: "from-blue-400 to-cyan-500" },
-];
-
 export function About() {
+  const { currentTerm } = useTime();
+  const termData = getTermData(currentTerm);
+  const { committeeData, subjectTeachers, competitionCoaches, rawGroups } = termData;
   const [selectedProfile, setSelectedProfile] = useState<StudentProfile | null>(null);
+
+  const studentCount = termData.idList 
+    ? termData.idList.length 
+    : rawGroups.reduce((acc: number, group) => acc + group.members.length, 0);
 
   const handleMemberClick = (namesStr: string) => {
     const name = namesStr.split('、')[0]; 
-    const profile = getStudentProfile(name);
+    const profile = getStudentProfile(name, currentTerm);
     setSelectedProfile(profile);
   };
 
@@ -120,11 +98,11 @@ export function About() {
         {/* Overview */}
         <section className="bg-white/40 dark:bg-white/5 backdrop-blur-lg rounded-3xl p-8 md:p-12 shadow-xl border border-white/50 dark:border-white/10">
           <h2 className="text-2xl font-bold text-sky-700 dark:text-sky-300 mb-6 flex items-center gap-3">
-            <Users /> 班级总览
+            <Users /> 班级总览 ({currentTerm})
           </h2>
           <div className="space-y-6 text-lg leading-relaxed text-slate-700 dark:text-slate-200">
             <p>
-              这里是 <span className="font-bold text-sky-600 dark:text-sky-400">G2501班</span>，一个由信息学、物理、数学、化学、生物五大学科竞赛生汇聚而成的创新集体。我们因热爱而相遇，为梦想而并肩，在理论与实验的交织中探索未知，在代码与公式的世界里开创新篇。
+              这里是 <span className="font-bold text-sky-600 dark:text-sky-400">G2501班</span>，一个由信息学、物理、数学、化学、生物五大学科竞赛生汇聚而成的创新集体。目前共计 {studentCount} 名同学。我们因热爱而相遇，为梦想而并肩，在理论与实验的交织中探索未知，在代码与公式的世界里开创新篇。
             </p>
             <p>
               这里不仅是学术深耕的土壤，更是思维碰撞、志同道合的精神家园。我们尊重每一份专注，也珍惜每一次合作；既有个体钻研的寂静时刻，也有团队备战的炽热场景。
@@ -165,7 +143,7 @@ export function About() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {committeeData.map((item, index) => (
               <motion.div 
-                key={index}
+                key={item.role + item.name}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -174,8 +152,8 @@ export function About() {
                 className="bg-white/60 dark:bg-slate-950/60 backdrop-blur-md rounded-2xl p-6 border border-white/50 dark:border-white/10 hover:bg-white/80 dark:hover:bg-slate-900/80 transition-all cursor-pointer group shadow-sm hover:shadow-md"
               >
                 <div className="flex items-center gap-4 mb-4">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${item.bg} ${item.color}`}>
-                    <item.icon size={24} />
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 text-blue-500`}>
+                    <UserCheck size={24} />
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-slate-800 dark:text-white">{item.role}</h3>
@@ -183,7 +161,7 @@ export function About() {
                   </div>
                 </div>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                  {item.desc}
+                  {item.description}
                 </p>
               </motion.div>
             ))}
@@ -285,7 +263,7 @@ export function About() {
         </section>
 
         {/* Atmosphere */}
-        <section className="bg-gradient-to-r from-violet-500 to-fuchsia-600 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
+        <section className="bg-gradient-to-r from-violet-500 to-fuchsia-600 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden mb-16">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl -mr-16 -mt-16"></div>
           <div className="relative z-10">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
@@ -320,14 +298,14 @@ export function About() {
               },
               {
                 title: "校军训拔河比赛特等奖",
-                desc: "一根绳，一条心。倾尽全力的呐喊与汗水，诠释了何为\u201c力出一孔\u201d的团队信念。",
+                desc: "一根绳，一条心。倾尽全力的呐喊与汗水，诠释了何为“力出一孔”的团队信念。",
                 icon: Dumbbell,
                 gradient: "from-orange-400 to-red-500",
                 bg: "from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30",
                 border: "border-orange-200 dark:border-orange-800/30",
               },
               {
-                title: "年级篮球赛第一名",
+                title: "年级篮球赛第三名",
                 desc: "奔跑、传球、跃起。赛场上的每一次配合，都是智慧与热血的双重奏，我们为共同的目标而战。",
                 icon: Award,
                 gradient: "from-blue-400 to-indigo-500",

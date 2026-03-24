@@ -45,3 +45,12 @@ html.dark {
 .dark * {
   scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
+
+/* Hide scrollbar for elements with .hide-scrollbar */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

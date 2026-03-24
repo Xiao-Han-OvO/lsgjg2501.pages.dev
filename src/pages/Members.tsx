@@ -1,214 +1,191 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { pinyin } from "pinyin-pro";
-import { Users, SortAsc, Hash } from "lucide-react";
+import { Search, User } from "lucide-react";
 import { StudentModal } from "@/components/StudentModal";
-import { getStudentProfile, StudentProfile, rawGroups, specialNames } from "@/data/classInfo";
+import { getTermData, getStudentProfile, StudentProfile, pinyinSort } from "@/data/classInfo";
+import { useTime } from "@/context/TimeContext";
+import { cn } from "@/utils/cn";
 
-type ViewMode = "group" | "name" | "id";
+type GroupMode = "competition" | "team" | "id" | "name";
 
 export function Members() {
-  const [viewMode, setViewMode] = useState<ViewMode>("group");
+  const { currentTerm } = useTime();
+  const termData = getTermData(currentTerm);
   const [selectedProfile, setSelectedProfile] = useState<StudentProfile | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [groupMode, setGroupMode] = useState<GroupMode>("competition");
 
-  const pinyinSort = (a: string, b: string) => {
-    return pinyin(a, { toneType: 'none' }).localeCompare(pinyin(b, { toneType: 'none' }));
-  };
-
-  const processedGroups = useMemo(() => {
-    return rawGroups.map(group => ({
-      ...group,
-      members: [...group.members].sort(pinyinSort)
-    }));
-  }, []);
-
-  const sortedMembersByName = useMemo(() => {
-    const allMembers = rawGroups.flatMap(group => 
-      group.members.map(name => ({
-        name,
-        groupName: group.name,
-        color: group.color,
-      }))
-    );
-    const unique = Array.from(new Map(allMembers.map(item => [item.name, item])).values());
-    return unique.sort((a, b) => pinyinSort(a.name, b.name));
-  }, []);
-
-  const sortedMembersById = useMemo(() => {
-    const all = [...sortedMembersByName];
-    const others = all.filter(m => !specialNames.includes(m.name));
-    const specials = all.filter(m => specialNames.includes(m.name));
-    
-    others.sort((a, b) => pinyinSort(a.name, b.name));
-    specials.sort((a, b) => pinyinSort(a.name, b.name));
-
-    return [...others, ...specials];
-  }, [sortedMembersByName]);
-
-  // Group by surname initial for "name" view
-  const groupedByInitial = useMemo(() => {
-    const groups: { letter: string; members: typeof sortedMembersByName }[] = [];
-    const map = new Map<string, typeof sortedMembersByName>();
-
-    for (const member of sortedMembersByName) {
-      const initial = pinyin(member.name.charAt(0), { pattern: 'first', toneType: 'none' }).charAt(0).toUpperCase();
-      if (!map.has(initial)) {
-        map.set(initial, []);
-      }
-      map.get(initial)!.push(member);
+  useEffect(() => {
+    // Reset to competition view if 'team' view is selected but no team data exists for the current term
+    if (groupMode === 'team' && !termData.tuanData) {
+      setGroupMode('competition');
     }
-
-    for (const [letter, members] of map) {
-      groups.push({ letter, members });
-    }
-
-    return groups;
-  }, [sortedMembersByName]);
-
-  const flatListToRender = viewMode === "id" ? sortedMembersById : sortedMembersByName;
+  }, [currentTerm, termData.tuanData, groupMode]);
 
   const handleMemberClick = (name: string) => {
-    const profile = getStudentProfile(name);
+    const profile = getStudentProfile(name, currentTerm);
     setSelectedProfile(profile);
   };
 
-  return (
-    <div className="h-full w-full flex flex-col items-center p-8 overflow-y-auto relative">
-      {/* Decorative blobs */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-teal-400/20 dark:bg-teal-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute top-1/3 -right-24 w-80 h-80 bg-emerald-400/20 dark:bg-emerald-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute bottom-1/4 left-1/4 w-72 h-72 bg-cyan-300/20 dark:bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-500" />
-      </div>
+  // Get unique members list
+  const allMembers = Array.from(new Set(termData.rawGroups.flatMap(g => g.members)));
+  const filteredMembers = allMembers.filter(name => name.includes(searchQuery));
 
-      <div className="flex flex-col items-center mb-12 mt-8">
-        <h1 className="text-3xl md:text-5xl font-bold text-center text-teal-900 dark:text-white mb-6">成员列表</h1>
-        
-        {/* Toggle Switch */}
-        <div className="flex flex-wrap justify-center items-center gap-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md p-1.5 rounded-full border border-white/20 shadow-sm">
-          <button
-            onClick={() => setViewMode("group")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
-              viewMode === "group" 
-                ? "bg-teal-600 text-white shadow-md" 
-                : "text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-700/40"
-            }`}
-          >
-            <Users size={16} />
-            <span>按学科</span>
-          </button>
-          <button
-            onClick={() => setViewMode("name")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
-              viewMode === "name" 
-                ? "bg-teal-600 text-white shadow-md" 
-                : "text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-700/40"
-            }`}
-          >
-            <SortAsc size={16} />
-            <span>按姓名</span>
-          </button>
-          <button
-            onClick={() => setViewMode("id")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
-              viewMode === "id" 
-                ? "bg-teal-600 text-white shadow-md" 
-                : "text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-700/40"
-            }`}
-          >
-            <Hash size={16} />
-            <span>按学号</span>
-          </button>
+  const getRenderSections = () => {
+    if (groupMode === 'competition') {
+      return termData.rawGroups.map(group => ({
+        name: group.name,
+        color: group.color,
+        members: group.members.filter(m => filteredMembers.includes(m)).sort(pinyinSort)
+      })).filter(g => g.members.length > 0);
+    }
+    
+    if (groupMode === 'team' && termData.tuanData) {
+      return termData.tuanData.map(tuan => ({
+        name: tuan.name,
+        color: "from-indigo-400 to-purple-500", 
+        members: tuan.members.filter(m => filteredMembers.includes(m)).sort(pinyinSort)
+      })).filter(t => t.members.length > 0);
+    }
+
+    if (groupMode === 'id') {
+      const sorted = [...filteredMembers].sort((a, b) => {
+        const idA = getStudentProfile(a, currentTerm).id;
+        const idB = getStudentProfile(b, currentTerm).id;
+        return idA - idB;
+      });
+      return [{
+        name: "全体成员 (按学号排序)",
+        color: "from-teal-400 to-emerald-500",
+        members: sorted
+      }].filter(g => g.members.length > 0);
+    }
+
+    if (groupMode === 'name') {
+      const sorted = [...filteredMembers].sort(pinyinSort);
+      return [{
+        name: "全体成员 (按拼音排序)",
+        color: "from-blue-400 to-cyan-500",
+        members: sorted
+      }].filter(g => g.members.length > 0);
+    }
+
+    return [];
+  };
+
+  const sections = getRenderSections();
+
+  return (
+    <div className="flex-1 w-full p-6 md:p-12 overflow-y-auto">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+          <div className="shrink-0">
+            <h1 className="text-4xl font-black text-slate-800 dark:text-white mb-2">成员列表</h1>
+            <p className="text-slate-500 dark:text-slate-400">G2501 班级全体成员 ({currentTerm})</p>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-4 w-full lg:w-auto">
+            {/* View Mode Toggle */}
+            <div className="flex bg-white/50 dark:bg-slate-900/50 backdrop-blur-md p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-x-auto hide-scrollbar shrink-0">
+              <button 
+                onClick={() => setGroupMode("competition")}
+                className={cn("px-4 py-2 text-sm font-bold rounded-xl whitespace-nowrap", groupMode === "competition" ? "bg-white dark:bg-slate-800 shadow-sm text-teal-600 dark:text-teal-400" : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300")}
+              >
+                按竞赛
+              </button>
+              {termData.tuanData && (
+                <button 
+                  onClick={() => setGroupMode("team")}
+                  className={cn("px-4 py-2 text-sm font-bold rounded-xl whitespace-nowrap", groupMode === "team" ? "bg-white dark:bg-slate-800 shadow-sm text-teal-600 dark:text-teal-400" : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300")}
+                >
+                  按团队
+                </button>
+              )}
+              <button 
+                onClick={() => setGroupMode("id")}
+                className={cn("px-4 py-2 text-sm font-bold rounded-xl whitespace-nowrap", groupMode === "id" ? "bg-white dark:bg-slate-800 shadow-sm text-teal-600 dark:text-teal-400" : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300")}
+              >
+                按学号
+              </button>
+              <button 
+                onClick={() => setGroupMode("name")}
+                className={cn("px-4 py-2 text-sm font-bold rounded-xl whitespace-nowrap", groupMode === "name" ? "bg-white dark:bg-slate-800 shadow-sm text-teal-600 dark:text-teal-400" : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300")}
+              >
+                按姓名
+              </button>
+            </div>
+
+            {/* Search Box */}
+            <div className="relative group w-full lg:w-64 shrink-0">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-teal-500 z-10 pointer-events-none" size={20} />
+              <input
+                type="text"
+                placeholder="搜索成员姓名..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 h-full bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-2xl focus:outline-none focus:ring-2 focus:ring-teal-500/50 transition-shadow dark:text-white"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-12">
+          {sections.map((section) => (
+            <section key={section.name}>
+              <div className="flex items-center gap-4 mb-6">
+                <h2 className={cn(
+                  "text-xl font-bold px-4 py-1.5 rounded-full text-white bg-gradient-to-r shadow-lg shadow-teal-500/10 whitespace-nowrap",
+                  section.color
+                )}>
+                  {section.name}
+                </h2>
+                <div className="flex-1 h-px bg-slate-200 dark:bg-slate-800" />
+                <span className="text-sm font-medium text-slate-400 whitespace-nowrap">{section.members.length} 人</span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {section.members.map((name) => {
+                  const profile = getStudentProfile(name, currentTerm);
+                  // Ensure consistent color fallback if missing
+                  const avatarColor = profile.color || "from-slate-400 to-slate-500";
+                  
+                  return (
+                    <motion.button
+                      key={name}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleMemberClick(name)}
+                      className="group relative bg-white dark:bg-slate-900/50 backdrop-blur-sm p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-teal-500/50 dark:hover:border-teal-500/50 hover:shadow-xl hover:shadow-teal-500/10 text-left"
+                    >
+                      <div className={cn(
+                        "w-12 h-12 rounded-xl mb-3 flex items-center justify-center bg-gradient-to-br text-white shadow-inner",
+                        avatarColor
+                      )}>
+                        <span className="text-xl font-bold">{name.charAt(0)}</span>
+                      </div>
+                      <h3 className="font-bold text-slate-800 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                        {name}
+                      </h3>
+                      <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-wider font-bold">
+                        ID: {profile.id.toString().padStart(2, '0')}
+                      </p>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
+          
+          {sections.length === 0 && (
+            <div className="text-center py-20 text-slate-400 dark:text-slate-500">
+              <User size={48} className="mx-auto mb-4 opacity-50" />
+              <p>没有找到匹配的成员</p>
+            </div>
+          )}
         </div>
       </div>
-      
-      <div className="w-full max-w-6xl pb-12 min-h-[50vh]">
-        {viewMode === "group" ? (
-          <div className="space-y-12">
-            {processedGroups.map((group) => (
-              <div key={group.name} className="flex flex-col gap-6">
-                <h3 className={`text-2xl font-bold text-slate-800 dark:text-white pl-4 border-l-4 ${group.color.includes('blue') ? 'border-blue-500' : group.color.includes('red') ? 'border-red-500' : group.color.includes('purple') ? 'border-purple-500' : group.color.includes('emerald') ? 'border-emerald-500' : 'border-lime-500'}`}>
-                  {group.name}
-                </h3>
-                <div className="flex flex-wrap gap-6">
-                  {group.members.map((member, i) => (
-                    <motion.div
-                      key={member}
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.3, delay: i * 0.05 }}
-                      onClick={() => handleMemberClick(member)}
-                      className="w-32 h-32 md:w-36 md:h-36 bg-white/40 dark:bg-white/5 backdrop-blur-lg rounded-2xl flex flex-col items-center justify-center border border-white/60 dark:border-white/10 hover:scale-105 hover:bg-white/60 dark:hover:bg-white/10 transition-all shadow-lg cursor-pointer group"
-                    >
-                      <div className={`w-10 h-10 bg-gradient-to-br ${group.color} rounded-full mb-3 shadow-inner flex items-center justify-center text-white font-bold text-xs opacity-80 group-hover:opacity-100 transition-opacity`}>
-                         {group.name[0]}
-                      </div>
-                      <h4 className="text-lg font-semibold text-slate-800 dark:text-white/90">{member}</h4>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : viewMode === "name" ? (
-          <div className="space-y-12">
-            {groupedByInitial.map((group) => (
-              <div key={group.letter} className="flex flex-col gap-6">
-                <h3 className="text-2xl font-bold text-slate-800 dark:text-white pl-4 border-l-4 border-teal-500">
-                  {group.letter}
-                </h3>
-                <div className="flex flex-wrap gap-6">
-                  {group.members.map((member, i) => (
-                    <motion.div
-                      key={member.name}
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.3, delay: i * 0.05 }}
-                      onClick={() => handleMemberClick(member.name)}
-                      className="w-32 h-32 md:w-36 md:h-36 bg-white/40 dark:bg-white/5 backdrop-blur-lg rounded-2xl flex flex-col items-center justify-center border border-white/60 dark:border-white/10 hover:scale-105 hover:bg-white/60 dark:hover:bg-white/10 transition-all shadow-lg cursor-pointer group relative overflow-hidden"
-                    >
-                      <div className={`absolute top-0 right-0 px-2 py-1 rounded-bl-lg text-[10px] font-bold text-white bg-gradient-to-r ${member.color} opacity-0 group-hover:opacity-100 transition-opacity`}>
-                        {member.groupName.replace("竞赛组", "")}
-                      </div>
-                      <div className={`w-10 h-10 bg-gradient-to-br ${member.color} rounded-full mb-3 shadow-inner flex items-center justify-center text-white font-bold text-xs opacity-80 group-hover:opacity-100 transition-opacity`}>
-                        {group.letter}
-                      </div>
-                      <h4 className="text-lg font-semibold text-slate-800 dark:text-white/90">{member.name}</h4>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-wrap gap-6 justify-center md:justify-start">
-            {flatListToRender.map((member, i) => (
-              <motion.div
-                key={`${member.name}-${viewMode}`}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: i * 0.02 }}
-                onClick={() => handleMemberClick(member.name)}
-                className="w-32 h-32 md:w-36 md:h-36 bg-white/40 dark:bg-white/5 backdrop-blur-lg rounded-2xl flex flex-col items-center justify-center border border-white/60 dark:border-white/10 hover:scale-105 hover:bg-white/60 dark:hover:bg-white/10 transition-all shadow-lg cursor-pointer group relative overflow-hidden"
-              >
-                <div className={`absolute top-0 right-0 px-2 py-1 rounded-bl-lg text-[10px] font-bold text-white bg-gradient-to-r ${member.color} opacity-0 group-hover:opacity-100 transition-opacity`}>
-                  {member.groupName.replace("竞赛组", "")}
-                </div>
 
-                <div className={`w-10 h-10 bg-gradient-to-br ${member.color} rounded-full mb-3 shadow-inner flex items-center justify-center text-white font-bold text-xs opacity-80 group-hover:opacity-100 transition-opacity`}>
-                   {i + 1}
-                </div>
-                <h4 className="text-lg font-semibold text-slate-800 dark:text-white/90">{member.name}</h4>
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <StudentModal 
+      <StudentModal
         isOpen={!!selectedProfile}
         onClose={() => setSelectedProfile(null)}
         profile={selectedProfile}

@@ -1,6 +1,14 @@
 import { motion } from "framer-motion";
+import { useTime } from "@/context/TimeContext";
+import { getTermData } from "@/data/classInfo";
 
 export function Home() {
+  const { currentTerm } = useTime();
+  const termData = getTermData(currentTerm);
+  const studentCount = termData.idList 
+    ? termData.idList.length 
+    : termData.rawGroups.reduce((acc: number, group) => acc + group.members.length, 0);
+
   return (
     <div className="flex-1 w-full flex flex-col justify-center items-center p-8 relative overflow-hidden text-center">
       {/* Content Wrapper */}
@@ -26,6 +34,27 @@ export function Home() {
         <p className="mt-8 text-base text-stone-600 dark:text-gray-300 max-w-2xl">
           一个由信息学、物理、数学、化学、生物五大学科竞赛生汇聚而成的创新集体。
         </p>
+
+        {/* Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-12 grid grid-cols-3 gap-6 md:gap-10"
+        >
+          {[
+            { value: studentCount.toString(), label: "名同学" },
+            { value: "5", label: "大学科" },
+            { value: "1", label: "个集体" },
+          ].map((stat) => (
+            <div key={stat.label} className="text-center">
+              <div className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-500 dark:from-orange-300 dark:to-amber-200">
+                {stat.value}
+              </div>
+              <div className="text-xs text-stone-500 dark:text-gray-400 mt-1">{stat.label}</div>
+            </div>
+          ))}
+        </motion.div>
       </motion.div>
     </div>
   );

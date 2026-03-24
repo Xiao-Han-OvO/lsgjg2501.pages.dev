@@ -1,176 +1,161 @@
 import { motion } from "framer-motion";
-import { Sparkles, TrainFront, GraduationCap, Home, Flame, Users, Quote, HelpCircle, Building2, Trophy, Star } from "lucide-react";
+import { 
+  Sparkles, 
+  Factory, 
+  TrainFront, 
+  Landmark, 
+  Sunset, 
+  Dumbbell, 
+  Handshake, 
+  Activity, 
+  PartyPopper,
+  Users
+} from "lucide-react";
+import React from "react";
+
+interface TimelineEvent {
+  date: string;
+  title: string;
+  description: string;
+  Icon: React.ElementType;
+}
+
+const events: TimelineEvent[] = [
+  {
+    date: "2025.3.16",
+    title: "初见",
+    description: "三月的傍晚，微风轻拂。一群怀揣竞赛梦想的少年，第一次以“G2501”之名相聚。从那一刻起，我们不再只是信息、物理、数学、化学、生物的单科行者，而成了一个共同体的星辰。",
+    Icon: Sparkles,
+  },
+  {
+    date: "2025.4.24",
+    title: "探访",
+    description: "走进华自科技，亲眼见证智能控制技术如何驱动水力发电、管理能源。算法与原理，在真实工程中找到回响。这是一次从理论到实践的“锚定”，让我们明晰了所学知识的重量与方向。",
+    Icon: Factory,
+  },
+  {
+    date: "2025.6.27-7.2",
+    title: "向北之行",
+    description: "夏日清晨，我们一同启程，奔赴北京。这不仅仅是一次旅行，更是一场并肩的远征。在古老的城垣下，在现代的霓虹中，我们笑着、走着，共享一段远离题海的青春时光。",
+    Icon: TrainFront,
+  },
+  {
+    date: "2025.6.30",
+    title: "燕园一瞥",
+    description: "那个下午，我们走进北京大学。穿过绿荫，驻足未名湖畔，仰望博雅塔的光影。这里不仅是梦想的学府，更是我们未来可能的远方。一颗名为“向往”的种子，悄悄种进了很多人的心里。",
+    Icon: Landmark,
+  },
+  {
+    date: "2025.7.2",
+    title: "傍晚南归",
+    description: "傍晚返程，行李箱里装满回忆，心中载着明晰的向往。我们知道，看过更广阔的世界，是为了更坚定地走好脚下的路。",
+    Icon: Sunset,
+  },
+  {
+    date: "2025.8.26-29",
+    title: "军训淬炼",
+    description: "夏末，迷彩服与烈日相遇。军训的四天，是汗水与意志的较量。站军姿、齐步走……我们在重复中学习坚持，在集体中体会秩序。皮肤晒黑了，眼神却更亮了——我们像被淬炼过的刀刃，暗自锋锐。",
+    Icon: Dumbbell,
+  },
+  {
+    date: "2025.9.1",
+    title: "同学加入",
+    description: "金秋伊始，班集体迎来了新面孔。新鲜的笑容注入，故事有了新的篇章。从“我”到“我们”，队伍更加完整，征程也更加辽阔。",
+    Icon: Handshake,
+  },
+  {
+    date: "2025.9.28-29",
+    title: "奔跑",
+    description: "操场成为新的赛场。从短跑的爆发到长跑的坚持，从田赛的跃起到接力的默契——我们不仅以笔为剑，亦能以汗水为歌。看台上的呐喊，跑道上的身影，共同拼成属于G2501的秋日群像。名次之外，我们收获了另一种全力以赴的酣畅。",
+    Icon: Activity,
+  },
+  {
+    date: "2025.12.25",
+    title: "绽放",
+    description: "平安夜的舞台，属于我们的课本剧。纵最终排名第九，但那份全心投入的酣畅、观众席真诚的笑声与掌声，早已超越名次。我们自信、尽兴、闪耀——过程比结果，更值得珍藏。这晚，我们不仅是竞赛生，更是生活的创作者。",
+    Icon: PartyPopper,
+  },
+  {
+    date: "2026.3.12",
+    title: "重组",
+    description: "春日的告别与相遇。分班之后，16位伙伴挥别此间，奔赴新的山海；15张新面孔携梦而来，汇入二五〇一的江河。\n\n离别不是句点，是曾经并肩的回响；相遇不是偶然，是故事翻开的下一章。教室里的座位变了，但窗外的阳光依旧；名单上的名字换了，但“湘水滔滔”的誓言仍在。\n\n人来人往，我们依然是G2501。",
+    Icon: Users,
+  },
+];
 
 export function Throwback() {
-  const events = [
-    {
-      date: "2025.3.16",
-      title: "初见",
-      icon: <Sparkles className="w-6 h-6 text-yellow-500" />,
-      content: "三月的傍晚，微风轻拂。一群怀揣竞赛梦想的少年，第一次以\u201CG2501\u201D之名相聚。从那一刻起，我们不再只是信息、物理、数学、化学、生物的单科行者，而成了一个共同体的星辰。"
-    },
-    {
-      date: "2025.4.24",
-      title: "探访",
-      icon: <Building2 className="w-6 h-6 text-cyan-500" />,
-      content: "走进华自科技，亲眼见证智能控制技术如何驱动水力发电、管理能源。算法与原理，在真实工程中找到回响。这是一次从理论到实践的\u201C锚定\u201D，让我们明晰了所学知识的重量与方向。"
-    },
-    {
-      date: "2025.6.27 \u2014 7.2",
-      title: "向北之行",
-      icon: <TrainFront className="w-6 h-6 text-blue-500" />,
-      content: "夏日清晨，我们一同启程，奔赴北京。这不仅仅是一次旅行，更是一场并肩的远征。在古老的城垣下，在现代的霓虹中，我们笑着、走着，共享一段远离题海的青春时光。"
-    },
-    {
-      date: "2025.6.30",
-      title: "燕园一瞥",
-      icon: <GraduationCap className="w-6 h-6 text-red-500" />,
-      content: "那个下午，我们走进北京大学。穿过绿荫，驻足未名湖畔，仰望博雅塔的光影。这里不仅是梦想的学府，更是我们未来可能的远方。一颗名为\u201C向往\u201D的种子，悄悄种进了很多人的心里。"
-    },
-    {
-      date: "2025.7.2",
-      title: "傍晚南归",
-      icon: <Home className="w-6 h-6 text-green-500" />,
-      content: "傍晚返程，行李箱里装满回忆，心中载着明晰的向往。我们知道，看过更广阔的世界，是为了更坚定地走好脚下的路。"
-    },
-    {
-      date: "2025.8.26-29",
-      title: "军训淬炼",
-      icon: <Flame className="w-6 h-6 text-orange-600" />,
-      content: "夏末，迷彩服与烈日相遇。军训的四天，是汗水与意志的较量。站军姿、齐步走\u2026\u2026我们在重复中学习坚持，在集体中体会秩序。皮肤晒黑了，眼神却更亮了\u2014\u2014我们像被淬炼过的刀刃，暗自锋锐。"
-    },
-    {
-      date: "2025.9.1",
-      title: "同学加入",
-      icon: <Users className="w-6 h-6 text-purple-500" />,
-      content: "金秋伊始，班集体迎来了26张新面孔。新鲜的笑容注入，故事有了新的篇章。从\u201C我\u201D到\u201C我们\u201D，队伍更加完整，征程也更加辽阔。"
-    },
-    {
-      date: "2025.9.28-29",
-      title: "奔跑",
-      icon: <Trophy className="w-6 h-6 text-amber-500" />,
-      content: "操场成为新的赛场。从短跑的爆发到长跑的坚持，从田赛的跃起到接力的默契\u2014\u2014我们不仅以笔为剑，亦能以汗水为歌。看台上的呐喊，跑道上的身影，共同拼成属于G2501的秋日群像。名次之外，我们收获了另一种全力以赴的酣畅。"
-    },
-    {
-      date: "2025.12.25",
-      title: "绽放",
-      icon: <Star className="w-6 h-6 text-pink-500" />,
-      content: "平安夜的舞台，属于我们的课本剧。纵最终排名第九，但那份全心投入的酣畅、观众席真诚的笑声与掌声，早已超越名次。我们自信、尽兴、闪耀\u2014\u2014过程比结果，更值得珍藏。这晚，我们不仅是竞赛生，更是生活的创作者。"
-    }
-  ];
-
   return (
-    <div className="h-full w-full flex flex-col items-center p-8 overflow-y-auto relative">
-      
-      <div className="max-w-4xl w-full pb-16">
-        <div className="text-center mt-8">
-          <h1 className="text-3xl md:text-5xl font-bold text-center text-slate-800 dark:text-white mb-12">
-            回顾过往
+    <div className="flex-1 w-full">
+      {/* Header */}
+      <section className="px-6 pt-16 md:pt-20 pb-12 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600 dark:from-amber-300 dark:to-orange-300 mb-4">
+            时光回顾
           </h1>
-        </div>
+          <p className="text-stone-600 dark:text-gray-400 max-w-xl mx-auto">
+            记录G2501班的每一个重要时刻，那些共同走过的日子。
+          </p>
+        </motion.div>
+      </section>
 
-        {/* Timeline Section */}
-        <section className="relative mb-16 pl-4 md:pl-0">
-          
-          <div className="space-y-12 relative">
-             <div className="absolute left-[23px] top-2 bottom-0 w-0.5 bg-stone-300 dark:bg-stone-700" />
-             {events.map((event, index) => (
-              <div key={index} className="relative pl-24 pr-4 md:pr-12 overflow-hidden">
-                {/* Icon - fade in */}
+      {/* Timeline */}
+      <section className="px-6 pb-16">
+        <div className="max-w-5xl mx-auto relative">
+          {/* Timeline line */}
+          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-amber-300 via-orange-300 to-amber-300 dark:from-amber-700 dark:via-orange-700 dark:to-amber-700 md:-translate-x-px" />
+
+          <div className="space-y-8 md:space-y-12">
+            {events.map((event, index) => {
+              const isLeft = index % 2 === 0;
+              return (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, margin: "-30px" }}
-                  transition={{ duration: 0.4, delay: index * 0.05, ease: "easeOut" }}
-                  className="absolute left-0 top-0 w-12 h-12 flex items-center justify-center bg-white dark:bg-stone-800 rounded-full border-2 border-stone-400 dark:border-stone-600 shadow-md z-10"
+                  key={event.date}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className={`relative flex items-start gap-4 ${
+                    isLeft ? "md:flex-row" : "md:flex-row-reverse"
+                  } ml-12 md:ml-0`}
                 >
-                  {event.icon}
-                </motion.div>
-                {/* Content - slide in from right, slower */}
-                <motion.div
-                  initial={{ opacity: 0, x: 120 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-30px" }}
-                  transition={{ duration: 0.7, delay: index * 0.05 + 0.15, ease: "easeOut" }}
-                >
-                  <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-2 pt-1">
-                    <span className="text-sm font-bold bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-200 px-2 py-1 rounded inline-block w-fit">
-                      {event.date}
-                    </span>
-                    <h3 className="text-2xl font-bold text-stone-800 dark:text-stone-200">
-                      {event.title}
-                    </h3>
+                  {/* Timeline dot */}
+                  <div className="absolute left-[-30px] md:left-1/2 md:-translate-x-1/2 top-2 w-5 h-5 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 border-4 border-amber-50 dark:border-stone-900 z-10 shadow-md" />
+
+                  {/* Content card */}
+                  <div className={`w-full md:w-[calc(50%-2rem)] ${isLeft ? "md:text-right" : "md:text-left"}`}>
+                    <div className="bg-white/50 dark:bg-white/5 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/30 dark:border-white/10 hover:bg-white/70 dark:hover:bg-white/10 transition-all duration-300 group shadow-sm hover:shadow-md">
+                      <div className={`flex items-center gap-3 mb-3 ${isLeft ? "md:justify-end" : ""}`}>
+                        <div className="text-amber-500 dark:text-amber-400 bg-amber-100/50 dark:bg-amber-900/30 p-2 rounded-xl">
+                          <event.Icon size={24} />
+                        </div>
+                        <span className="text-sm font-mono font-medium text-amber-600 dark:text-amber-400 bg-amber-100/50 dark:bg-amber-900/30 px-3 py-1 rounded-full">
+                          {event.date}
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-bold text-stone-800 dark:text-white mb-2">
+                        {event.title}
+                      </h3>
+                      <p className="text-base text-stone-600 dark:text-gray-400 leading-relaxed">
+                        {event.description}
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-stone-600 dark:text-stone-400 leading-relaxed bg-white/50 dark:bg-stone-800/50 p-4 rounded-lg">
-                    {event.content}
-                  </p>
-                </motion.div>
-              </div>
-            ))}
 
-            {/* Future Node */}
-            <div className="relative pl-24 pr-4 md:pr-12 overflow-hidden">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-30px" }}
-                transition={{ duration: 0.4, delay: events.length * 0.05, ease: "easeOut" }}
-                className="absolute left-0 top-0 w-12 h-12 flex items-center justify-center bg-white dark:bg-stone-800 rounded-full border-2 border-stone-400 dark:border-stone-600 shadow-md z-10"
-              >
-                <HelpCircle className="w-6 h-6 text-indigo-500" />
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: 120 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-30px" }}
-                transition={{ duration: 0.7, delay: events.length * 0.05 + 0.15, ease: "easeOut" }}
-              >
-                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-2 pt-1">
-                   <span className="text-sm font-bold bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-200 px-2 py-1 rounded inline-block w-fit">
-                      Future
-                    </span>
-                    <h3 className="text-2xl font-bold text-stone-800 dark:text-stone-200">
-                      未来可期
-                    </h3>
-                </div>
-                 <p className="text-stone-600 dark:text-stone-400 leading-relaxed bg-white/50 dark:bg-stone-800/50 p-4 rounded-lg">
-                    我们的未来充满无限可能
-                  </p>
-              </motion.div>
-            </div>
+                  {/* Spacer for the other side */}
+                  <div className="hidden md:block md:w-[calc(50%-2rem)]" />
+                </motion.div>
+              );
+            })}
           </div>
 
-        </section>
-
-        {/* Footer Section */}
-        <section className="mt-16 border-t-2 border-stone-300 dark:border-stone-700 pt-12">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="text-center mb-12"
-          >
-             <h3 className="text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">时光向前，我们向上</h3>
-             <p className="text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto">
-               这些日子，被郑重地标记在G2501班的时间线上。它们不只是日期，更是我们共同心跳的证明。从相遇，到同行，从看见远方，到回归初心{"\u2014\u2014"}我们正在书写属于自己的历史。
-             </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
-            className="bg-white/80 dark:bg-stone-800/80 p-8 rounded-lg shadow-xl border-l-8 border-orange-500 backdrop-blur-sm relative overflow-hidden"
-          >
-             <Quote className="absolute top-4 right-4 w-12 h-12 text-orange-200 dark:text-orange-900/50" />
-            <blockquote className="text-2xl md:text-3xl font-serif text-stone-900 dark:text-white mb-2 leading-relaxed italic text-center relative z-10">
-              {`\u201C湘水滔滔，二五〇一。他日问鼎，还看今朝。\u201D`}
-            </blockquote>
-          </motion.div>
-        </section>
-      </div>
+          {/* End dot */}
+          <div className="absolute left-6 md:left-1/2 bottom-0 md:-translate-x-1/2 w-3 h-3 rounded-full bg-amber-300 dark:bg-amber-700" />
+        </div>
+      </section>
     </div>
   );
 }
