@@ -78,7 +78,7 @@ export function Layout({ children }: { children: ReactNode }) {
                   {/* Left: Copyright */}
                   <div className="text-center sm:text-left">
                     <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
-                      Stable Build v1.1.2
+                      Stable Build v1.1.3
                     </p>
                     <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                       © 2025-2026{" "}
